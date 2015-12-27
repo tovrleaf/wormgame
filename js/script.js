@@ -44,3 +44,12 @@ function moveRight() {
         left: fromLeft + 'px'
     });
 }
+
+function resetGame() {
+    fromLeft = 0;
+    fromTop = 0;
+    $("#worm").css({
+        left: fromLeft + 'px',
+        top: fromTop + 'px'
+    });
+}
