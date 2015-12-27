@@ -1,0 +1,12 @@
+#gamearea {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+}
+
+#worm {
+    background-color: red;
+    position: relative;
+    width: 10px;
+    height: 10px;
+}
