@@ -1,55 +1,55 @@
-var fromLeft = 0;
-var fromTop = 0;
+var fromLeft, fromTop, gameareaOffset;
+
+$(document).ready(function() {
+    resetGame();
+});
 
 function moveLeft() {
     fromLeft = fromLeft - 10;
-    if (fromLeft < 0) {
-        fromLeft = 0;
+    if (fromLeft < gameareaOffset.left) {
+        fromLeft = gameareaOffset.left;
         return;
     }
-    $("#worm").css({
-        left: fromLeft + 'px'
-    });
+    growWorm(fromLeft, fromTop);
 }
 
 function moveUp() {
     fromTop = fromTop - 10;
-    if (fromTop < 0) {
-        fromTop = 0;
+    if (fromTop < gameareaOffset.top) {
+        fromTop = gameareaOffset.top;
         return;
     }
-    $("#worm").css({
-        top: fromTop + 'px'
-    });
+    growWorm(fromLeft, fromTop);
 }
 
 function moveDown() {
     fromTop = fromTop + 10;
-    if (fromTop >= 100) {
+    if (fromTop >= 100 + gameareaOffset.top) {
         fromTop = fromTop - 10;
         return;
     }
-    $("#worm").css({
-        top: fromTop + 'px'
-    });
+    growWorm(fromLeft, fromTop);
 }
 
 function moveRight() {
     fromLeft = fromLeft + 10;
-    if (fromLeft >= 100) {
+    if (fromLeft >= 100 + gameareaOffset.left) {
         fromLeft = fromLeft - 10;
         return;
     }
-    $("#worm").css({
-        left: fromLeft + 'px'
+    growWorm(fromLeft, fromTop);
+}
+
+function growWorm(x, y) {
+    $("#gamearea .worm:last").clone().appendTo("#gamearea").offset({
+        left: x,
+        top: y
     });
 }
 
 function resetGame() {
-    fromLeft = 0;
-    fromTop = 0;
-    $("#worm").css({
-        left: fromLeft + 'px',
-        top: fromTop + 'px'
-    });
+    $("#gamearea").html('<div class="worm"></div>');
+    gameareaOffset = $("#gamearea .worm").offset();
+    fromLeft = gameareaOffset.left;
+    fromTop = gameareaOffset.top;
 }
