@@ -10,7 +10,7 @@ function moveLeft() {
         fromLeft = gameareaOffset.left;
         return;
     }
-    growWorm(fromLeft, fromTop);
+    growWorm(fromLeft, fromTop, "left");
 }
 
 function moveUp() {
@@ -19,7 +19,7 @@ function moveUp() {
         fromTop = gameareaOffset.top;
         return;
     }
-    growWorm(fromLeft, fromTop);
+    growWorm(fromLeft, fromTop, "up");
 }
 
 function moveDown() {
@@ -28,7 +28,7 @@ function moveDown() {
         fromTop = fromTop - 10;
         return;
     }
-    growWorm(fromLeft, fromTop);
+    growWorm(fromLeft, fromTop, "down");
 }
 
 function moveRight() {
@@ -37,18 +37,42 @@ function moveRight() {
         fromLeft = fromLeft - 10;
         return;
     }
-    growWorm(fromLeft, fromTop);
+    growWorm(fromLeft, fromTop, "right");
 }
 
-function growWorm(x, y) {
-    $("#gamearea .worm:last").clone().appendTo("#gamearea").offset({
+function growWorm(x, y, direction) {
+    var last = $("#gamearea .worm:last");
+    last.removeClass("head");
+    if (direction == "left") {
+        last.addClass("right");
+    }
+    if (direction == "down") {
+        last.addClass("up");
+    }
+    if (direction == "up") {
+        last.addClass("down");
+    }
+    if (direction == "right") {
+        last.addClass("left");
+    }
+    if (last.hasClass("left") && last.hasClass("right")) {
+        last.addClass("fullWidth");
+    }
+    if (last.hasClass("up") && last.hasClass("down")) {
+        last.addClass("fullHeight");
+    }
+    $(createWormElement()).addClass(direction).appendTo("#gamearea").offset({
         left: x,
         top: y
     });
 }
 
+function createWormElement() {
+    return '<div class="worm head"></div>';
+}
+
 function resetGame() {
-    $("#gamearea").html('<div class="worm"></div>');
+    $("#gamearea").html(createWormElement());
     gameareaOffset = $("#gamearea .worm").offset();
     fromLeft = gameareaOffset.left;
     fromTop = gameareaOffset.top;

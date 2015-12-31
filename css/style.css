@@ -4,14 +4,50 @@ body {
 
 #gamearea {
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #39464E;
     width: 100px;
     height: 100px;
 }
 
 .worm {
-    background-color: red;
-    position: relative;
+    background-color: #00cc00;
+    border: 1px solid black;
+    width: 8px;
+    height: 8px;
+}
+
+.left {
+    border-right: none;
+    width: 9px;
+}
+
+.up {
+    border-bottom: none;
+    height: 9px;
+}
+
+.down {
+    border-top: none;
+    height: 9px;
+}
+
+.right {
+    border-left: none;
+    width: 9px;
+}
+
+.head {
+    border: 2px solid #000;
+    width: 6px;
+    height: 6px;
+    background-color: #66ff66;
+}
+
+.fullWidth {
     width: 10px;
+}
+
+.fullHeight {
     height: 10px;
 }
+
