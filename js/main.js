@@ -42,25 +42,25 @@ $(document).ready(function() {
 });
 
 function setDirectionRight() {
-  if (isWormMoving) {
+  if (isWormMoving && direction != "left") {
     direction = "right";
   }
 }
 
 function setDirectionDown() {
-  if (isWormMoving) {
+  if (isWormMoving && direction != "up") {
     direction = "down";
   }
 }
 
 function setDirectionLeft() {
-  if (isWormMoving) {
+  if (isWormMoving && direction != "right") {
     direction = "left";
   }
 }
 
 function setDirectionUp() {
-  if (isWormMoving) {
+  if (isWormMoving && direction != "down") {
     direction = "up";
   }
 }
@@ -109,6 +109,7 @@ function startGame() {
 
   if (isWormMoving) {
     stopGame();
+    setMessage("Pause");
   } else {
     isWormMoving = true;
     gameInterval = setInterval(moveWorm, 300);
