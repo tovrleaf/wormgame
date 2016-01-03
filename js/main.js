@@ -1,7 +1,6 @@
 var fromLeft, fromTop;
 var gameareaOffset, direction = null;
 var gameInterval = null, isWormMoving = false, isGameOver = false;
-var coor = [];
 
 function moveWorm() {
   if (! isWormMoving || isGameOver) {
@@ -25,7 +24,8 @@ function moveWorm() {
   }
 
   if (! isGameOver && isWormMoving) {
-    if (coor[fromLeft] && coor[fromLeft][fromTop]) {
+
+    if (isCoordinateReserved(fromLeft, fromTop)) {
       gameOver();
       return false;
     }
@@ -127,7 +127,7 @@ function resetGame() {
   fromTop = gameareaOffset.top;
 
   direction = null;
-  coor = [];
+  resetCoordinates();
   isGameOver = false;
   if (gameInterval) {
     stopGame();
@@ -144,12 +144,6 @@ function stopGame() {
   isWormMoving = false;
 }
 
-function reserveCoordinate(x, y) {
-  if (! coor[x]) {
-    coor[x] = [];
-  }
-  coor[x][y] = true;
-}
 
 function getScore() {
   return "Your score: " + getWormElement().size();

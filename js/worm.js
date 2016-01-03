@@ -1,6 +1,7 @@
 function growWorm(x, y, direction) {
   var last = getLastWormElement();
   last.removeClass("head");
+
   if (direction == "left") {
     last.addClass("right");
   }
