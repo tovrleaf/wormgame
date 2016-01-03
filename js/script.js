@@ -1,70 +1,100 @@
-var fromLeft, fromTop, gameareaOffset, direction;
+var fromLeft, fromTop;
+var gameareaOffset, direction = null;
+var gameInterval = null, isWormMoving = false, isGameOver = false;
+var coor = [];
 
-setInterval(function() {;
-    switch (direction) {
+function moveWorm() {
+  if (! isWormMoving || isGameOver) {
+    return;
+  }
+  switch (direction) {
     case "right":
-        moveRight();
+      moveRight();
       break;
     case "down":
-        moveDown();
+      moveDown();
       break;
     case "left":
-        moveLeft();
+      moveLeft();
       break;
     case "up":
-        moveUp();
+      moveUp();
       break;
     default: // default omitted
-        break;
-    }
+      break;
+  }
 
-  if (direction) {
-      growWorm(fromLeft, fromTop, direction);
+  if (! isGameOver && isWormMoving) {
+    if (growWorm(fromLeft, fromTop, direction)) {
+      $("#message").html(getScore());
     }
-}, 1000);
+  }
+};
 
 $(document).ready(function() {
-    resetGame();
+  resetGame();
 });
 
-function setDirectionRight() { direction = "right"; }
-function setDirectionDown() { direction = "down"; }
-function setDirectionLeft() { direction = "left"; }
-function setDirectionUp() { direction = "up"; }
+function setDirectionRight() {
+  if (gameInterval) {
+    direction = "right";
+  }
+}
+
+function setDirectionDown() {
+  if (gameInterval) {
+    direction = "down";
+  }
+}
+
+function setDirectionLeft() {
+  if (gameInterval) {
+    direction = "left";
+  }
+}
+
+function setDirectionUp() {
+  if (gameInterval) {
+    direction = "up";
+  }
+}
 
 function moveRight() {
   fromLeft = fromLeft + 10;
   if (fromLeft >= 100 + gameareaOffset.left) {
-    fromLeft = fromLeft - 10;
-    return;
+    gameOver();
   }
 }
 
 function moveDown() {
   fromTop = fromTop + 10;
   if (fromTop >= 100 + gameareaOffset.top) {
-    fromTop = fromTop - 10;
-    return;
+    gameOver();
   }
 }
 
 function moveLeft() {
   fromLeft = fromLeft - 10;
   if (fromLeft < gameareaOffset.left) {
-    fromLeft = gameareaOffset.left;
-    return;
+    gameOver();
   }
 }
 
 function moveUp() {
   fromTop = fromTop - 10;
-  if (fromTop < gameareaOffset.top) {
-    fromTop = gameareaOffset.top;
-    return;
+  if (fromTop <= gameareaOffset.top) {
+    gameOver();
   }
 }
 
 function growWorm(x, y, direction) {
+  if (coor[x] && coor[x][y]) {
+    gameOver();
+    return false;
+  }
+
+  reserveCoordinate(x, y);
+
   var last = $("#gamearea .worm:last");
   last.removeClass("head");
   if (direction == "left") {
@@ -76,7 +106,7 @@ function growWorm(x, y, direction) {
   if (direction == "up") {
     last.addClass("down");
   }
-    if (direction == "right") {
+  if (direction == "right") {
     last.addClass("left");
   }
   if (last.hasClass("left") && last.hasClass("right")) {
@@ -85,20 +115,72 @@ function growWorm(x, y, direction) {
   if (last.hasClass("up") && last.hasClass("down")) {
       last.addClass("fullHeight");
   }
-    $(createWormElement()).addClass(direction).appendTo("#gamearea").offset({
+  $(createWormElement()).addClass(direction).appendTo("#gamearea").offset({
     left: x,
     top: y
   });
+
+  return true;
 }
 
 function createWormElement() {
   return '<div class="worm head"></div>';
 }
 
+function gameOver() {
+  stopGame();
+  $("#message").html("Game Over!<br>" + getScore());
+}
+
+function startGame() {
+  if (isGameOver) {
+    return;
+  }
+
+  if (isWormMoving) {
+    stopGame();
+  } else {
+    isWormMoving = true;
+    gameInterval = setInterval(moveWorm, 300);
+    if (! direction) {
+      setDirectionRight();
+    }
+  }
+}
+
 function resetGame() {
   $("#gamearea").html(createWormElement());
   gameareaOffset = $("#gamearea .worm").offset();
+
   fromLeft = gameareaOffset.left;
   fromTop = gameareaOffset.top;
+
   direction = null;
+  coor = [];
+  isGameOver = false;
+  if (gameInterval) {
+    stopGame();
+  }
+
+  reserveCoordinate(fromLeft, fromTop);
+
+  $("#message").html("");
+}
+
+function stopGame() {
+  clearInterval(gameInterval);
+  gameInterval = null;
+  isGameOver = true;
+  isWormMoving = false;
+}
+
+function reserveCoordinate(x, y) {
+  if (! coor[x]) {
+    coor[x] = [];
+  }
+  coor[x][y] = true;
+}
+
+function getScore() {
+  return "Your score: " + $("#gamearea .worm").size();
 }
