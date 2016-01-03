@@ -42,6 +42,27 @@ function moveWorm() {
 
 $(document).ready(function() {
   resetGame();
+  $('body').keydown(function(e) {
+    switch (e.keyCode) {
+      case 32:
+        startGame();
+        break;
+      case 37:
+        setDirectionLeft();
+        break;
+      case 38:
+        setDirectionUp();
+        break;
+      case 39:
+        setDirectionRight();
+        break;
+      case 40:
+        setDirectionDown();
+        break;
+      case 82:
+        resetGame();
+    }
+  });
 });
 
 function setDirectionRight() {
