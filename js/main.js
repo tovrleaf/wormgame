@@ -1,8 +1,8 @@
 var gameareaOffset, direction = null;
-var gameInterval = null, isWormMoving = false, isGameOver = false;
+var gameInterval = null, isGameOver = false;
 
 function moveWorm() {
-  if (! isWormMoving || isGameOver) {
+  if (isGameOver) {
     return;
   }
 
@@ -26,7 +26,7 @@ function moveWorm() {
       break;
   }
 
-  if (! isGameOver && isWormMoving) {
+  if (! isGameOver) {
 
     if (isCoordinateReserved(x, y)) {
       gameOver();
@@ -45,25 +45,25 @@ $(document).ready(function() {
 });
 
 function setDirectionRight() {
-  if (isWormMoving && direction != "left") {
+  if (gameInterval && direction != "left") {
     direction = "right";
   }
 }
 
 function setDirectionDown() {
-  if (isWormMoving && direction != "up") {
+  if (gameInterval && direction != "up") {
     direction = "down";
   }
 }
 
 function setDirectionLeft() {
-  if (isWormMoving && direction != "right") {
+  if (gameInterval && direction != "right") {
     direction = "left";
   }
 }
 
 function setDirectionUp() {
-  if (isWormMoving && direction != "down") {
+  if (gameInterval && direction != "down") {
     direction = "up";
   }
 }
@@ -114,11 +114,10 @@ function startGame() {
     return;
   }
 
-  if (isWormMoving) {
+  if (gameInterval) {
     stopGame();
     setMessage("Pause");
   } else {
-    isWormMoving = true;
     gameInterval = setInterval(moveWorm, 300);
     if (! direction) {
       setDirectionRight();
@@ -148,7 +147,6 @@ function resetGame() {
 function stopGame() {
   clearInterval(gameInterval);
   gameInterval = null;
-  isWormMoving = false;
 }
 
 
