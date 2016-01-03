@@ -1,4 +1,3 @@
-var fromLeft, fromTop;
 var gameareaOffset, direction = null;
 var gameInterval = null, isWormMoving = false, isGameOver = false;
 
@@ -6,18 +5,22 @@ function moveWorm() {
   if (! isWormMoving || isGameOver) {
     return;
   }
+
+  var l = getWormLocation();
+  var x = l.x, y = l.y;
+
   switch (direction) {
     case "right":
-      moveRight();
+      x = moveRight();
       break;
     case "down":
-      moveDown();
+      y = moveDown();
       break;
     case "left":
-      moveLeft();
+      x = moveLeft();
       break;
     case "up":
-      moveUp();
+      y = moveUp();
       break;
     default: // default omitted
       break;
@@ -25,14 +28,14 @@ function moveWorm() {
 
   if (! isGameOver && isWormMoving) {
 
-    if (isCoordinateReserved(fromLeft, fromTop)) {
+    if (isCoordinateReserved(x, y)) {
       gameOver();
       return false;
     }
 
-    reserveCoordinate(fromLeft, fromTop);
+    reserveCoordinate(x, y);
 
-    growWorm(fromLeft, fromTop, direction)
+    growWorm(x, y, direction)
     setMessage(getScore());
   }
 };
@@ -66,31 +69,35 @@ function setDirectionUp() {
 }
 
 function moveRight() {
-  fromLeft = fromLeft + 10;
-  if (fromLeft >= 100 + gameareaOffset.left) {
+  var x = getWormLocation().x + 10;
+  if (x >= 100 + gameareaOffset.left) {
     gameOver();
   }
+  return x;
 }
 
 function moveDown() {
-  fromTop = fromTop + 10;
-  if (fromTop >= 100 + gameareaOffset.top) {
+  var y = getWormLocation().y + 10;
+  if (y >= 100 + gameareaOffset.top) {
     gameOver();
   }
+  return y;
 }
 
 function moveLeft() {
-  fromLeft = fromLeft - 10;
-  if (fromLeft < gameareaOffset.left) {
+  var x = getWormLocation().x - 10;
+  if (x < gameareaOffset.left) {
     gameOver();
   }
+  return x;
 }
 
 function moveUp() {
-  fromTop = fromTop - 10;
-  if (fromTop <= gameareaOffset.top) {
+  var y = getWormLocation().y - 10;
+  if (y <= gameareaOffset.top) {
     gameOver();
   }
+  return y;
 }
 
 function createWormElement() {
@@ -123,9 +130,6 @@ function resetGame() {
   getGameareaElement().html(createWormElement());
   gameareaOffset = getLastWormElement().offset();
 
-  fromLeft = gameareaOffset.left;
-  fromTop = gameareaOffset.top;
-
   direction = null;
   resetCoordinates();
   isGameOver = false;
@@ -133,7 +137,10 @@ function resetGame() {
     stopGame();
   }
 
-  reserveCoordinate(fromLeft, fromTop);
+  var l = getWormLocation();
+  var x = l.x, y = l.y;
+
+  reserveCoordinate(x, y);
 
   setMessage("");
 }

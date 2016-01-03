@@ -25,3 +25,11 @@ function growWorm(x, y, direction) {
     top: y
   });
 }
+
+function getWormLocation() {
+  var o = getLastWormElement().offset();
+  return {
+    x: o.left,
+    y: o.top
+  };
+}
