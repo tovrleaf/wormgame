@@ -12,8 +12,16 @@ function getWormElement() {
   return $("#gamearea .worm");
 }
 
+function createWormElement() {
+  return '<div class="worm head"></div>';
+}
+
 function setMessage(message) {
   $("#message").html(message);
+}
+
+function enableOptions() {
+  $("#options select").removeAttr("disabled");
 }
 
 function isCoordinateReserved(x, y) {
