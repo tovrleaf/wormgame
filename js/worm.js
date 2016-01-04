@@ -27,6 +27,14 @@ function growWorm(x, y, direction, speed) {
     last.addClass("fullHeight");
   }
 
+  getWormElement().each(function() {
+    var o = $(this).css("opacity");
+    o = o - 0.01;
+    if (o >= 0.25) {
+      $(this).css("opacity", o);
+    }
+  });
+
   $(createWormElement()).addClass(direction).appendTo(getGameareaElement()).css({
     position: "absolute",
     left: prevX,
