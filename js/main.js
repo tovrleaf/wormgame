@@ -32,7 +32,7 @@ function moveWorm() {
 
     reserveCoordinate(x, y);
 
-    growWorm(x, y, direction)
+    growWorm(x, y, direction, speed)
     setMessage(getScore());
   }
 };
@@ -112,7 +112,7 @@ function moveLeft() {
 
 function moveUp() {
   var y = getWormLocation().y - 10;
-  if (y <= gameareaOffset.top) {
+  if (y < gameareaOffset.top) {
     gameOver();
   }
   return y;
@@ -148,7 +148,8 @@ function startGame() {
         speed = 1000;
     }
 
-    var gameAreaWidth = $("#areasize").val();
+    gameAreaWidth = Number($("#areasize").val());
+
     getGameareaElement().width(gameAreaWidth).height(gameAreaWidth);
 
     gameInterval = setInterval(moveWorm, speed);

@@ -1,18 +1,24 @@
-function growWorm(x, y, direction) {
+function growWorm(x, y, direction, speed) {
   var last = getLastWormElement();
   last.removeClass("head");
 
+  var prevX = x, prevY = y;
+
   if (direction == "left") {
     last.addClass("right");
+    prevX += 10;
   }
   if (direction == "down") {
     last.addClass("up");
+    prevY -= 10;
   }
   if (direction == "up") {
     last.addClass("down");
+    prevY += 10;
   }
   if (direction == "right") {
     last.addClass("left");
+    prevX -= 10;
   }
   if (last.hasClass("left") && last.hasClass("right")) {
     last.addClass("fullWidth");
@@ -20,16 +26,23 @@ function growWorm(x, y, direction) {
   if (last.hasClass("up") && last.hasClass("down")) {
     last.addClass("fullHeight");
   }
-  $(createWormElement()).addClass(direction).appendTo(getGameareaElement()).offset({
+
+  $(createWormElement()).addClass(direction).appendTo(getGameareaElement()).css({
+    position: "absolute",
+    left: prevX,
+    top: prevY
+  }).animate({
     left: x,
     top: y
+  }, {
+    duration: speed
   });
 }
 
 function getWormLocation() {
   var o = getLastWormElement().offset();
   return {
-    x: o.left,
-    y: o.top
+    x: Math.round(o.left),
+    y: Math.round(o.top)
   };
 }
