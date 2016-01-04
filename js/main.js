@@ -1,6 +1,6 @@
 var gameareaOffset, direction = null;
 var gameInterval = null, isGameOver = false;
-var speed;
+var speed, gameAreaWidth;
 
 function moveWorm() {
   var l = getWormLocation();
@@ -88,7 +88,7 @@ function setDirectionUp() {
 
 function moveRight() {
   var x = getWormLocation().x + 10;
-  if (x >= 100 + gameareaOffset.left) {
+  if (x >= gameAreaWidth + gameareaOffset.left) {
     gameOver();
   }
   return x;
@@ -96,7 +96,7 @@ function moveRight() {
 
 function moveDown() {
   var y = getWormLocation().y + 10;
-  if (y >= 100 + gameareaOffset.top) {
+  if (y >= gameAreaWidth + gameareaOffset.top) {
     gameOver();
   }
   return y;
@@ -147,6 +147,9 @@ function startGame() {
       default:
         speed = 1000;
     }
+
+    var gameAreaWidth = $("#areasize").val();
+    getGameareaElement().width(gameAreaWidth).height(gameAreaWidth);
 
     gameInterval = setInterval(moveWorm, speed);
     if (! direction) {
