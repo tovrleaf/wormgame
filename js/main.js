@@ -60,6 +60,32 @@ $(document).ready(function() {
         resetGame();
     }
   });
+
+  gameAreaWidth = Number($("#areasize").val());
+
+  $("#obstacles").click(function() {
+    if ($(this).is(':checked')) {
+      generateObstacles(gameAreaWidth);
+    } else {
+      getObstacleElement().remove();
+    }
+  });
+
+  $("#areasize").change(function() {
+    gameAreaWidth = $(this).val();
+
+    enableOptions(false);
+    getObstacleElement().remove();
+    getGameareaElement().animate({
+      width: gameAreaWidth,
+      height: gameAreaWidth,
+    }, "fast", function() {
+      if ($("#obstacles").is(':checked')) {
+        generateObstacles(gameAreaWidth);
+      }
+      enableOptions(true);
+    });
+  });
 });
 
 function setDirectionRight() {
@@ -148,13 +174,8 @@ function startGame() {
         speed = 700;
     }
 
-    gameAreaWidth = Number($("#areasize").val());
-    getGameareaElement().width(gameAreaWidth).height(gameAreaWidth);
     gameInterval = setInterval(moveWorm, speed);
     if (! direction) {
-      if ($("#obstacles").is(':checked')) {
-        generateObstacles(gameAreaWidth);
-      }
       setDirectionRight();
     }
   }
@@ -163,6 +184,9 @@ function startGame() {
 function resetGame() {
   getGameareaElement().html(createWormElement());
   gameareaOffset = getLastWormElement().offset();
+  if ($("#obstacles").is(':checked')) {
+    generateObstacles(gameAreaWidth);
+  }
 
   direction = null;
   resetCoordinates();

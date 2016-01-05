@@ -36,7 +36,6 @@ function growWorm(x, y, direction, speed) {
   });
 
   $(createWormElement()).addClass(direction).appendTo(getGameareaElement()).css({
-    position: "absolute",
     left: prevX,
     top: prevY
   }).animate({

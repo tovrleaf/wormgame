@@ -16,6 +16,10 @@ function createWormElement() {
   return '<div class="worm head"></div>';
 }
 
+function getObstacleElement() {
+  return $("#gamearea .obstacle");
+}
+
 function setMessage(message) {
   $("#message").html(message);
 }
