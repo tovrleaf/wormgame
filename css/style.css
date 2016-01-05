@@ -21,6 +21,14 @@ code {
   height: 8px;
 }
 
+.ended {
+  background-color: #ff3300 !important;
+}
+
+.paused {
+  background-color: #333333 !important;
+}
+
 .obstacle {
   position: absolute;
   background-color: black;

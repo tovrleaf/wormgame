@@ -56,9 +56,12 @@ $(document).ready(function() {
       case 40:
         setDirectionDown();
         break;
+      case 79:
+        $("#obstacles").trigger("click");
+        break;
       case 82:
         resetGame();
-    }
+      }
   });
 
   gameAreaWidth = Number($("#areasize").val());
@@ -148,6 +151,7 @@ function gameOver() {
   stopGame();
   isGameOver = true;
   setMessage("Game Over!<br>" + getScore());
+  getGameareaElement().addClass("ended");
   enableOptions(true);
 }
 
@@ -159,8 +163,10 @@ function startGame() {
   if (gameInterval) {
     stopGame();
     setMessage("Pause");
+    getGameareaElement().addClass("paused");
   } else {
     enableOptions(false);
+    getGameareaElement().removeClass("paused");
 
     switch ($("#difficulty").val()) {
       case "hard":
@@ -195,6 +201,7 @@ function resetGame() {
     stopGame();
   }
   enableOptions(true);
+  getGameareaElement().removeClass("ended").removeClass("paused");
 
   var l = getWormLocation();
   var x = l.x, y = l.y;
