@@ -20,8 +20,14 @@ function setMessage(message) {
   $("#message").html(message);
 }
 
-function enableOptions() {
-  $("#options select").removeAttr("disabled");
+function enableOptions(enable) {
+  if (enable) {
+    $("#options select").removeAttr("disabled");
+    $("#options input").removeAttr("disabled");
+  } else {
+    $("#options select").attr("disabled", "disabled");
+    $("#options input").attr("disabled", "disabled");
+  }
 }
 
 function isCoordinateReserved(x, y) {

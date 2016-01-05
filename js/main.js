@@ -122,7 +122,7 @@ function gameOver() {
   stopGame();
   isGameOver = true;
   setMessage("Game Over!<br>" + getScore());
-  enableOptions();
+  enableOptions(true);
 }
 
 function startGame() {
@@ -134,26 +134,27 @@ function startGame() {
     stopGame();
     setMessage("Pause");
   } else {
-    $("#options select").attr("disabled", "disabled");
+    enableOptions(false);
 
     switch ($("#difficulty").val()) {
       case "hard":
-        speed = 250;
+        speed = 150;
         break;
       case "normal":
-        speed = 500;
+        speed = 300;
         break;
       case "easy":
       default:
-        speed = 1000;
+        speed = 700;
     }
 
     gameAreaWidth = Number($("#areasize").val());
-
     getGameareaElement().width(gameAreaWidth).height(gameAreaWidth);
-
     gameInterval = setInterval(moveWorm, speed);
     if (! direction) {
+      if ($("#obstacles").is(':checked')) {
+        generateObstacles(gameAreaWidth);
+      }
       setDirectionRight();
     }
   }
@@ -169,7 +170,7 @@ function resetGame() {
   if (gameInterval) {
     stopGame();
   }
-  enableOptions();
+  enableOptions(true);
 
   var l = getWormLocation();
   var x = l.x, y = l.y;
@@ -185,5 +186,5 @@ function stopGame() {
 }
 
 function getScore() {
-  return "Your score: " + (getWormElement().size() * (1000 / speed));
+  return "Your score: " + (getWormElement().size() * Math.round((700 / speed)));
 }
