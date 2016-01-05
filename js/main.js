@@ -190,12 +190,12 @@ function startGame() {
 function resetGame() {
   getGameareaElement().html(createWormElement());
   gameareaOffset = getLastWormElement().offset();
-  if ($("#obstacles").is(':checked')) {
-    generateObstacles(gameAreaWidth);
-  }
 
   direction = null;
   resetCoordinates();
+  if ($("#obstacles").is(':checked')) {
+    generateObstacles(gameAreaWidth);
+  }
   isGameOver = false;
   if (gameInterval) {
     stopGame();
