@@ -67,6 +67,9 @@ $(document).ready(function() {
   gameAreaWidth = Number($("#areasize").val());
 
   $("#obstacles").click(function() {
+    if (isGameOver) {
+      return;
+    }
     if ($(this).is(':checked')) {
       generateObstacles(gameAreaWidth);
     } else {
